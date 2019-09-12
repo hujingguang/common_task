@@ -1,0 +1,48 @@
+- hosts: "localhost"
+  gather_facts: True
+  become: yes
+  tasks:
+  - name: remove old common_task daemon
+    cron:
+      name: "add common_task daemon"
+      state: absent
+
+  - name: install common_task daemon
+    cron:
+      name: "add common_task daemon"
+      minute: "1"
+      hour: "0"
+      job: /usr/local/bin/common_task stop;/usr/local/bin/common_task start
+
+  - name: upload common_task script
+    copy:
+      src: ./files/common_task
+      dest: /usr/local/bin/common_task
+      owner: root
+      group: root
+      mode: 755
+
+  - name: test python is install ?
+    command: test -e /opt/common_task/python/bin/python
+    register: result
+    ignore_errors: True
+
+  - name: upload python package
+    copy:
+      src: ./files/python.tar.gz
+      dest: /tmp/python.tar.gz
+      owner: root
+      group: root
+      mode: 755
+    when: result.rc == 1
+
+  - name: install python 
+    shell: cd /tmp/ && tar -zxf python.tar.gz && mkdir -p /opt/common_task/ && mv /tmp/python /opt/common_task
+    when: result.rc == 1
+
+  - name: start common_task
+    shell: /usr/local/bin/common_task stop;/usr/local/bin/common_task start
+
+
+
+
