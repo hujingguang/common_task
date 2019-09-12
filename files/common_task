@@ -28,7 +28,7 @@ _LOG_INFO = {
 
 _PID_FILE = '/tmp/common_task.pid'
 _DEBUG = False
-_NTP_SERVER_ADDRESS = 'ntpupdate.tencentyun.com'  # 时间服务器地址
+_NTP_SERVER_ADDRESS = 'ntp1.aliyun.com'  # 时间服务器地址
 _NTP_UPDATE_TIME = 300
 _DATA_DIR = '/opt/common_task/data'  # 系统信息存储目录
 _SS_CHECK_INTERVAL = 60
